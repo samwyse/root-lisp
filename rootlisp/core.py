@@ -17,10 +17,16 @@ def eval(exp, env):
         elif car_exp == "cons": return cons(exp, env)
         elif car_exp == "cond": return cond(exp, env)
         elif car_exp == "defun": return defun(exp, env)
+        elif car_exp == "dump_env": return dump_env(env)
         else: return call_named_fn(exp, env)
     caar_exp = car_exp[0]
     if caar_exp == "lambda": return apply(exp, env)
     elif caar_exp == "label": return label(exp, env)
+
+def dump_env(env):
+    for x, value in env:
+        print('%s = %r' % (x, value))
+    return 'nil'
 
 def lookup(atom, env):
     for x, value in env:
