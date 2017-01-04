@@ -17,17 +17,17 @@ def parse(source):
     if rest:
         raise SyntaxError('Expected EOF')
     elif exp[0] == "'":
-        return ["quote", parse(exp[1:])]
+        return ("quote", parse(exp[1:]))
     elif exp[0] == "(":
         end = find_matching_paren(exp)
-        return [parse(e) for e in split_exps(exp[1:end])]
+        return tuple(parse(e) for e in split_exps(exp[1:end]))
     else:
         return exp
 
 def parse_multiple(source):
     """Creates a list of ASTs from program source 
     constituting multiple expressions"""
-    return [parse(exp) for exp in split_exps(source)]
+    return tuple(parse(exp) for exp in split_exps(source))
 
 def split_exps(source):
     """Splits a source string into subexpressions 
