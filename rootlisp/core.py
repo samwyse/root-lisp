@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+NIL = ()
+
 def is_atom(exp): 
     return isinstance(exp, str)
 
@@ -26,7 +28,7 @@ def eval(exp, env):
 def dump_env(env):
     for x, value in env:
         print('%s = %r' % (x, value))
-    return 'nil'
+    return NIL
 
 def lookup(atom, env):
     for x, value in env:
@@ -39,22 +41,22 @@ def quote(exp):
 
 def atom(exp, env):
     val = eval(exp[1], env)
-    return 't' if is_atom(val) else 'f'
+    return 't' if is_atom(val) else NIL
 
 def eq(exp, env):
     v1, v2 = eval(exp[1], env), eval(exp[2], env)
-    return 't' if v1 == v2 and is_atom(v1) else 'f'
+    return 't' if v1 == v2 and is_atom(v1) else NIL
 
 def car(exp, env):
-    return eval(exp[1], env)[0]
+    lst = eval(exp[1], env)
+    return NIL if len(lst) == 0 else lst[0]
 
 def cdr(exp, env):
-    lst = eval(exp[1], env)
-    return 'nil' if len(lst) == 1 else lst[1:]
+    return eval(exp[1], env)[1:]
 
 def cons(exp, env):
     rest = eval(exp[2], env)
-    if rest == 'nil':
+    if rest == NIL:
         rest = []
     return [eval(exp[1], env)] + rest
 
