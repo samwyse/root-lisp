@@ -5,19 +5,22 @@ def is_atom(exp):
 
 def eval(exp, env):
     """Function for evaluating the basic axioms"""
-    if is_atom(exp): return lookup(exp, env)
-    elif is_atom(exp[0]):
-        if exp[0] == "quote": return quote(exp)
-        elif exp[0] == "atom": return atom(exp, env)
-        elif exp[0] == "eq": return eq(exp, env)
-        elif exp[0] == "car": return car(exp, env)
-        elif exp[0] == "cdr": return cdr(exp, env)
-        elif exp[0] == "cons": return cons(exp, env)
-        elif exp[0] == "cond": return cond(exp, env)
-        elif exp[0] == "defun": return defun(exp, env)
+    if is_atom(exp):
+        return lookup(exp, env)
+    car_exp = exp[0]
+    if is_atom(car_exp):
+        if car_exp == "quote": return quote(exp)
+        elif car_exp == "atom": return atom(exp, env)
+        elif car_exp == "eq": return eq(exp, env)
+        elif car_exp == "car": return car(exp, env)
+        elif car_exp == "cdr": return cdr(exp, env)
+        elif car_exp == "cons": return cons(exp, env)
+        elif car_exp == "cond": return cond(exp, env)
+        elif car_exp == "defun": return defun(exp, env)
         else: return call_named_fn(exp, env)
-    elif exp[0][0] == "lambda": return apply(exp, env)
-    elif exp[0][0] == "label": return label(exp, env)
+    caar_exp = car_exp[0]
+    if caar_exp == "lambda": return apply(exp, env)
+    elif caar_exp == "label": return label(exp, env)
 
 def lookup(atom, env):
     for x, value in env:
