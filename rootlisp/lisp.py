@@ -19,8 +19,8 @@ def interpret_file(filename, env):
     """Interpret a list source file, returning the value of the last expression"""
     with open(filename, 'r') as f:
         source = f.read()
-    results = [eval(ast, env) for ast in 
-                parse_multiple(source)]
+    results = tuple(eval(ast, env) for ast in 
+                parse_multiple(source))
     return results[-1]
 
 def repl(env=None):
