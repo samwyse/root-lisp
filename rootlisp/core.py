@@ -56,9 +56,7 @@ def cdr(exp, env):
 
 def cons(exp, env):
     rest = eval(exp[2], env)
-    if rest == NIL:
-        rest = []
-    return [eval(exp[1], env)] + rest
+    return (eval(exp[1], env)) + rest
 
 def cond(exp, env):
     for p, e in exp[1:]:
@@ -67,18 +65,18 @@ def cond(exp, env):
 
 def defun(exp, env):
     name, params, body = exp[1], exp[2], exp[3]
-    label = ["label", name, ["lambda", params, body]]
+    label = ("label", name, ("lambda", params, body))
     env.insert(0, (name, label))
     return name
 
 def call_named_fn(exp, env):
     fn = lookup(exp[0], env)
-    return eval([fn] + exp[1:], env)
+    return eval((fn,) + exp[1:], env)
 
 def label(exp, env):
     _, f, fn = exp[0]
     args = exp[1:]
-    return eval([fn] + args, [(f, exp[0])] + env)
+    return eval((fn,) + args, ((f, exp[0])) + env)
 
 def apply(exp, env):
     fn, args = exp[0], exp[1:]
