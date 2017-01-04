@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
+
 from sys import argv
 from os.path import dirname, join
 from rootlisp.lisp import interpret_file, repl
@@ -11,4 +13,4 @@ interpret_file(join(dirname(__file__), "stdlib.lisp"), env)
 if len(argv) < 2:
     repl(env)
 else:
-    print unparse(interpret_file(argv[1], env))
+    print(unparse(interpret_file(argv[1], env)))

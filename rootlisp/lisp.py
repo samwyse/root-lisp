@@ -1,7 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from parser import parse, parse_multiple, unparse
-from core import eval
+from __future__ import print_function
+
+from sys import version_info
+
+if version_info[0] <= 2:
+    input = raw_input
+
+from .parser import parse, parse_multiple, unparse
+from .core import eval
 
 def interpret(exp, env=None):
     """Interpret a single Lisp expression"""
@@ -19,10 +26,18 @@ def interpret_file(filename, env):
 def repl(env=None):
     """A very simple REPL"""
     env = [] if env is None else env
+    err_count = 0
     while True:
         try:
-            print interpret(raw_input("> "), env)
+            print(interpret(input("> "), env))
         except (EOFError, KeyboardInterrupt):
             return
-        except Exception, e:
-            print "! %s" % e
+        except Exception as e:
+            print("! %s" % e)
+            err_count += 1
+            if err_count > 3:
+                print("! too many errors, aborting")
+                return
+        else:
+            err_count = 0
+
